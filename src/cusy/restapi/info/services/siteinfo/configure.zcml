@@ -4,13 +4,18 @@
 
   <adapter factory=".get.SiteInfo" name="siteinfo"/>
 
+  <permission
+    id="cusy.restapi.siteinfo"
+    title="SiteInfo: Access Site Info"
+    />
+
   <plone:service
       factory=".get.SiteInfoGet"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       layer="cusy.restapi.info.interfaces.ICusyRestapiInfoLayer"
       method="GET"
       name="@siteinfo"
-      permission="zope2.View"
+      permission="cusy.restapi.siteinfo"
       />
 
   <plone:service
@@ -19,7 +24,7 @@
       layer="cusy.restapi.info.interfaces.ICusyRestapiInfoLayer"
       method="GET"
       name="@siteinfo"
-      permission="zope2.View"
+      permission="cusy.restapi.siteinfo"
       />
 
 </configure>
