@@ -16,7 +16,7 @@ long_description = "\n\n".join(
 
 setup(
     name="cusy.restapi.info",
-    version="1.0.0.dev0",
+    version="1.0.0.dev1",
     description="Site and content info for plone.restapi.",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
