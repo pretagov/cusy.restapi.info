@@ -41,12 +41,15 @@ class SiteInfo(object):
 
         portal = plone.api.portal.get()
         navigation_root = getNavigationRootObject(self.context, portal)
+        logo = getSiteLogo(include_type=True)
 
         result["siteinfo"].update(
             {
                 "title": site_settings.site_title,
                 "navigation_root": navigation_root.absolute_url(),
-                "logo_url": getSiteLogo(),
+                "logo_url": logo[0],
+                "logo_type": logo[1],
+                "logo_filename": logo[0][len(portal.absolute_url())+13:],
                 "multilingual": len(available_languages) > 1,
                 "available_languages": available_languages,
                 "default_language": default_language,
