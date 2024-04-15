@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 """Service to get site information."""
 
-from cusy.restapi.info.interfaces import ICusyRestapiInfoLayer
+import plone.api
 from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.base.interfaces import ISecuritySchema, ISiteSchema
 from plone.registry.interfaces import IRegistry
 from plone.restapi.interfaces import IExpandableElement
 from plone.restapi.services import Service
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone.utils import getSiteLogo
-from zope.component import adapter
-from zope.component import getUtility
-from zope.interface import implementer
-from zope.interface import Interface
+from zope.component import adapter, getAdapter, getUtility
+from zope.interface import Interface, implementer
 
-import plone.api
+from cusy.restapi.info.interfaces import ICusyRestapiInfoLayer
 
 
 @implementer(IExpandableElement)
@@ -43,16 +41,20 @@ class SiteInfo(object):
         navigation_root = getNavigationRootObject(self.context, portal)
         logo = getSiteLogo(include_type=True)
 
+        security = getAdapter(portal, ISecuritySchema)
+
         result["siteinfo"].update(
             {
                 "title": site_settings.site_title,
                 "navigation_root": navigation_root.absolute_url(),
                 "logo_url": logo[0],
                 "logo_type": logo[1],
-                "logo_filename": logo[0][len(portal.absolute_url())+13:],
+                "logo_filename": logo[0][len(portal.absolute_url()) + 13 :],
                 "multilingual": len(available_languages) > 1,
                 "available_languages": available_languages,
                 "default_language": default_language,
+                "use_email_as_login": security.use_email_as_login,
+                "enable_self_reg": security.enable_self_reg,
             }
         )
         return result
